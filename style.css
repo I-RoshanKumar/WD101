@@ -1,0 +1,46 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body {
+    background-color: rgb(173, 245, 221); /* Light green background */
+    text-align: center; /* Center-aligns text for overall body */
+    font-family: Arial, sans-serif; /* Sets font family */
+    font-size: 16px; /* Adjust font size for readability */
+
+}
+.container {
+    width: 600px; /* Fixed width for the form container */
+    margin: 30px auto; /* Centers the container horizontally and adds margin from top and bottom */
+    padding: 20px; /* Adds padding inside the container */
+    background-color: white; /* Background color for the container */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+    border-radius: 10px; /* Rounds the corners of the container */
+}
+.table{
+    width: 600px; /* Fixed width for the form container */
+    margin: 30px auto; /* Centers the container horizontally and adds margin from top and bottom */
+    padding: 20px; /* Adds padding inside the container */
+    background-color: white; /* Background color for the container */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+    border-radius: 10px; 
+     table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+}
+th, td {
+    border: 1px solid black;
+    padding: 10px 20px; /* Adding space inside the header cells */
+    text-align: left;
+}
+th {
+    background-color: #f2f2f2;
+}
+th:not(:last-child) {
+    padding-right: 30px; /* Adds extra space between headers */
+}
+form{
+     display: flex;
+    flex-direction: column;
+}

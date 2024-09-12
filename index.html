@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Adding onsubmit validation on form -->
+        <form name="myForm" onsubmit="return ageValidate()" method="post">
+            <h1>Registration Form</h1>
+        
+            <label for="name">Name</label>
+            <input type="text" id="name" placeholder="Enter name" required>
+
+            <label for="email">Enter Mail Id</label>
+            <input type="email" id="email" placeholder="Enter email" required>
+
+            <label for="password">Enter Password</label>
+            <input type="password" id="password" placeholder="Enter password" required>
+
+            <!-- Fixing label and adding onsubmit at the right place -->
+            <label for="dob">Enter DOB</label>
+            <input type="date" id="dob" name="dob" placeholder="Enter dob" required>
+
+            <label for="agreeTerms" class="agree">Agree to our terms and conditions</label>
+            <input type="checkbox" id="checkbox" required>
+
+            <button type="submit" onclick="SubmitEvent">Submit</button>
+        </form>
+    </div>
+    <div class="table"> 
+        <table id="userTable">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>DOB</th>
+                    <th>Accepted Terms</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <script src="index.js"></script>
+</body>
+</html>
