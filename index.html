@@ -8,10 +8,10 @@
 </head>
 <body>
     <div class="container">
-        <!-- Adding onsubmit validation on form -->
+        <!-- Form for user registration -->
         <form name="myForm" onsubmit="return ageValidate()" method="post">
             <h1>Registration Form</h1>
-        
+
             <label for="name">Name</label>
             <input type="text" id="name" placeholder="Enter name" required>
 
@@ -21,7 +21,6 @@
             <label for="password">Enter Password</label>
             <input type="password" id="password" placeholder="Enter password" required>
 
-            <!-- Fixing label and adding onsubmit at the right place -->
             <label for="dob">Enter DOB</label>
             <input type="date" id="dob" name="dob" placeholder="Enter dob" required>
 
@@ -31,6 +30,8 @@
             <button type="submit" onclick="SubmitEvent">Submit</button>
         </form>
     </div>
+
+    <!-- Table to display registered users -->
     <div class="table"> 
         <table id="userTable">
             <thead>
@@ -46,6 +47,7 @@
             </tbody>
         </table>
     </div>
+
     <script src="index.js"></script>
 </body>
 </html>

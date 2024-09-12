@@ -2,11 +2,11 @@ let element = (id) => document.getElementById(id);
 
 let user_entries = [];
 
-function fillTable(){
+function fillTable() {
     let obj = localStorage.getItem("user_entries");
-    if(obj){
+    if (obj) {
         user_entries = JSON.parse(obj);
-    }else{
+    } else {
         user_entries = [];
     }
     return user_entries;
@@ -14,25 +14,25 @@ function fillTable(){
 user_entries = fillTable();
 
 let username = element("name"),
-  email = element("email"),
-  password = element("password"),
-  dob = element("dob"),
-  tc = element("checkbox"); // Updated to match 'checkbox' id in HTML
+    email = element("email"),
+    password = element("password"),
+    dob = element("dob"),
+    tc = element("checkbox"); // Updated to match 'checkbox' id in HTML
 
 let form = document.forms["myForm"];
 
-function verify(elem, message, cnd){
-    if(cnd){
+function verify(elem, message, cnd) {
+    if (cnd) {
         elem.style.border = "2px solid red";
         elem.setCustomValidity(message);
         elem.reportValidity();
-    }else{
+    } else {
         elem.style.border = "2px solid green";
         elem.setCustomValidity('');
     }
 }
 
-function checkDOB(){
+function checkDOB() {
     let age = new Date().getFullYear() - new Date(dob.value).getFullYear();
     return !(age < 18 || age > 55);
 }
@@ -66,7 +66,7 @@ tc.addEventListener("input", (e) => {
     verify(tc, message_agree, cond_agree);
 });
 
-function makeObject(){
+function makeObject() {
     return {
         name: username.value,
         email: email.value,
@@ -76,20 +76,20 @@ function makeObject(){
     };
 }
 
-function displayTable(){
-    let table = element("userTable").getElementsByTagName('tbody')[0]; // Get tbody
+function displayTable() {
+    let tableBody = element("userTable").getElementsByTagName('tbody')[0]; // Get tbody
     let entries = user_entries;
     let str = ``;
-    for(let i = 0; i < entries.length; i++){
+    for (let i = 0; i < entries.length; i++) {
         str += `<tr>
                     <td>${entries[i].name}</td>
                     <td>${entries[i].email}</td>
-                    <td>${entries[i].password}</td>
+                    <td>${'*'.repeat(entries[i].password.length)}</td> <!-- Mask password -->
                     <td>${entries[i].dob}</td>
-                    <td>${entries[i].checked}</td>
+                    <td>${entries[i].checked ? 'Yes' : 'No'}</td> <!-- Yes/No for terms -->
                 </tr>\n`;
     }
-    table.innerHTML = str;
+    tableBody.innerHTML = str;
 }
 
 form.addEventListener("submit", (e) => {
@@ -104,5 +104,5 @@ form.addEventListener("submit", (e) => {
 });
 
 window.onload = (event) => {
-    displayTable();
+    displayTable(); // Ensure table loads with user entries (if any)
 };
