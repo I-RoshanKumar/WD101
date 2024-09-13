@@ -1,108 +1,88 @@
-let element = (id) => document.getElementById(id);
+// Getting the form element by its ID
+let userentries = document.getElementById("registrationForm");
 
-let user_entries = [];
+// Retrieving existing user entries from localStorage or initializing an empty array
+const a = JSON.parse(localStorage.getItem("user-entries")) || [];
 
-function fillTable() {
-    let obj = localStorage.getItem("user_entries");
-    if (obj) {
-        user_entries = JSON.parse(obj);
-    } else {
-        user_entries = [];
-    }
-    return user_entries;
-}
-user_entries = fillTable();
+// Handling form submission and storing the entries
+userentries.addEventListener("submit", (event) => {
+    event.preventDefault();
 
-let username = element("name"),
-    email = element("email"),
-    password = element("password"),
-    dob = element("dob"),
-    tc = element("checkbox"); // Updated to match 'checkbox' id in HTML
+    // Getting form field values
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const pass = document.getElementById("password").value;
+    const dob = document.getElementById("dob").value;
+    const checked = document.getElementById("terms").checked;
 
-let form = document.forms["myForm"];
-
-function verify(elem, message, cnd) {
-    if (cnd) {
-        elem.style.border = "2px solid red";
-        elem.setCustomValidity(message);
-        elem.reportValidity();
-    } else {
-        elem.style.border = "2px solid green";
-        elem.setCustomValidity('');
-    }
-}
-
-function checkDOB() {
-    let age = new Date().getFullYear() - new Date(dob.value).getFullYear();
-    return !(age < 18 || age > 55);
-}
-
-let message_name = "Username must be at least 3 characters long";
-let message_email = "Email must be valid";
-let message_agree = "You must agree to the terms and conditions";
-let message_dob = "Your age must be between 18 and 55 to continue";
-
-username.addEventListener("input", (e) => {
-    let cond_name = username.value.length < 3;
-    e.preventDefault();
-    verify(username, message_name, cond_name);
-});
-
-email.addEventListener("input", (e) => {
-    let cond_email = !(email.value.includes("@") && email.value.includes("."));
-    e.preventDefault();
-    verify(email, message_email, cond_email);
-});
-
-dob.addEventListener("input", (e) => {
-    let cond_dob = !checkDOB();
-    e.preventDefault();
-    verify(dob, message_dob, cond_dob);
-});
-
-tc.addEventListener("input", (e) => {
-    let cond_agree = !tc.checked;
-    e.preventDefault();
-    verify(tc, message_agree, cond_agree);
-});
-
-function makeObject() {
-    return {
-        name: username.value,
-        email: email.value,
-        password: password.value,
-        dob: dob.value,
-        checked: tc.checked
+    // Creating a new entry object
+    const entry = {
+        name,
+        email,
+        pass,
+        dob,
+        checked
     };
-}
 
-function displayTable() {
-    let tableBody = element("userTable").getElementsByTagName('tbody')[0]; // Get tbody
-    let entries = user_entries;
-    let str = ``;
-    for (let i = 0; i < entries.length; i++) {
-        str += `<tr>
-                    <td>${entries[i].name}</td>
-                    <td>${entries[i].email}</td>
-                    <td>${'*'.repeat(entries[i].password.length)}</td> <!-- Mask password -->
-                    <td>${entries[i].dob}</td>
-                    <td>${entries[i].checked ? 'Yes' : 'No'}</td> <!-- Yes/No for terms -->
-                </tr>\n`;
-    }
-    tableBody.innerHTML = str;
-}
+    // Adding the new entry to the array and saving to localStorage
+    a.push(entry);
+    localStorage.setItem("user-entries", JSON.stringify(a));
 
-form.addEventListener("submit", (e) => {
-    let cond_agree = !tc.checked;
-    e.preventDefault();
-    if (!cond_agree) {
-        let obj = makeObject();
-        user_entries.push(obj);
-        localStorage.setItem("user_entries", JSON.stringify(user_entries));
-    }
-    displayTable();
+    // Reloading the page to show the new entry in the table
+    window.location.reload();
 });
 
-window.onload = (event) => {
-    displayTable(); // Ensure table loads with user entries (if any)
-};
+// Retrieving stored entries from localStorage to display in the table
+const b = JSON.parse(localStorage.getItem("user-entries")) || [];
+
+// Mapping through each stored entry and appending it to the table
+b.map((be) => {
+    document.getElementById("w1").innerHTML += `
+        <tr>
+            <td class="px-4 py-2 border-b">${be.name}</td>
+            <td class="px-4 py-2 border-b">${be.email}</td>
+            <td class="px-4 py-2 border-b">${be.pass}</td>
+            <td class="px-4 py-2 border-b">${be.dob}</td>
+            <td class="px-4 py-2 border-b">${be.checked ? 'Yes' : 'No'}</td>
+        </tr>`;
+});
+
+// Date of Birth validation logic (age must be between 18 and 55)
+document.getElementById("dob").addEventListener('input', (event) => {
+    event.preventDefault();
+
+    // Calculating the user's age based on the input date of birth
+    let age = new Date().getFullYear() - new Date(dob.value).getFullYear();
+
+    function checkAge() {
+        if (age < 18 || age > 55) {
+            dob.setCustomValidity("Age should be between 18 to 55");
+            dob.reportValidity();
+        } else {
+            dob.setCustomValidity('');
+        }
+    }
+    checkAge();
+});
+
+// Email validation logic
+document.getElementById("email").addEventListener('input', (event) => {
+    event.preventDefault();
+
+    // Function to validate email format
+    function isValidEmail(email) {
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic regex for validating email
+        return emailPattern.test(email);
+    }
+
+    // Checking if the email is valid and setting appropriate validity messages
+    function checkEmail(ev) {
+        if (!isValidEmail(ev)) {
+            email.setCustomValidity(`Email ${email.value} is not in the right format`);
+            email.reportValidity();
+        } else {
+            email.setCustomValidity('');
+        }
+    }
+    checkEmail(email.value);
+});
