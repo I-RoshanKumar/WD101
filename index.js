@@ -22,6 +22,24 @@ userentries.addEventListener("submit", (event) => {
     userentries.reset();  // Clear the form
 });
 
+document.getElementById("dob").addEventListener('input', (event) => {
+    event.preventDefault();
+
+    // Calculating the user's age based on the input date of birth
+    let age = new Date().getFullYear() - new Date(dob.value).getFullYear();
+
+    function checkAge() {
+        if (age < 18 || age > 55) {
+            dob.setCustomValidity("Age should be between 18 to 55");
+            dob.reportValidity();
+        } else {
+            dob.setCustomValidity('');
+        }
+    }
+    checkAge();
+});
+
+
 // Function to display entries in the table
 function displayTable() {
     const entries = JSON.parse(localStorage.getItem("user-entries")) || [];
@@ -34,7 +52,7 @@ function displayTable() {
                         <td>${entry.email}</td>
                         <td>${entry.pass}</td>
                         <td>${entry.dob}</td>
-                        <td>${entry.checked ? "Yes" : "No"}</td>
+                        <td>${entry.checked ? "true" : "false"}</td>
                      </tr>`;
         tableBody.innerHTML += row;
     });
